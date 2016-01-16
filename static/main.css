@@ -30,6 +30,10 @@ input{
   border-style: hidden;
 }
 
+h2{
+  text-align: center;
+}
+
 .map{
   border-bottom: 2px;
   border-width: 2px;

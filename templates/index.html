@@ -24,44 +24,58 @@
           </div>
         </div>
       
+      <h2 id="loadin">Loading data...</h2>
       <div id="map" class="map"></div>
 
       <h5 style="text-align:center;">Check <a href="https://github.com/PolBaladas/LoklakHeatmap">this Project</a> on Github</h5>
     
     <script type="text/javascript">
+      $("#loadin").hide();
+      var value = "";
       var map = new ol.Map({
         target: 'map',
+        controls: [],
+        interactions: [],
         layers: [
           new ol.layer.Tile({
-            source: new ol.source.MapQuest({layer: 'sat'})
+            source: new ol.source.OSM()
           })
         ],
         view: new ol.View({
           center: ol.proj.fromLonLat([0, 0]),
-          zoom: 2
+          zoom: 1.9
         })
       });
 
       function updateMap(){
         var query = document.getElementById('search').value;
-        if(query!='' || query!=' ' || query!=null){
-          var tweetLocations = getTweetsLocations(query);
-          renderTweets(tweetLocations);  
+        if(query!='' || query!=' ' || query!=null || query!=value){
+          renderTweets(query);  
         }
+        value = query;
       }
 
-      function getTweetsLocations(query){
-        raw_data = $.get("http://loklak.org/api/search.json?q="+query, function(data){
-          alert(data)
-          locations = []
-          tweets = data;
-          return locations
-        });
-      }
-
-      function renderTweets(locations){
-
-      }
+        function renderTweets(query){
+          $("#loadin").show();
+          $.getJSON("/search?q="+query, function(data){
+            layerData = new ol.source.Vector();
+            for(i=0; i<data.length; i++){ 
+              var coord = new ol.geom.Point(ol.proj.transform([data[i][0], data[i][1]], 'EPSG:4326', 'EPSG:3857'));
+              var pointFt = new ol.Feature({
+                  geometry: coord,
+                  weight: 0.5
+              });
+              layerData.addFeature(pointFt);
+              heatLayer = new ol.layer.Heatmap({
+                source: layerData,
+                radius: 1
+              });
+              map.addLayer(heatLayer);
+            }
+            $("#loadin").hide();
+          });
+          return 0;
+        }
 
     </script>
 </body>
