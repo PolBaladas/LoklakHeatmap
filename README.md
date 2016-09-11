@@ -4,4 +4,18 @@
 
 Tweet Heatmap using loklak as a source.
 
+Demo: polbaladas.com/loklakHeatMap/
+
+##Set up / Requirements
+
+## Local Set up
+
+##Server set up
+
+##License
+
+
+
+
+
 
