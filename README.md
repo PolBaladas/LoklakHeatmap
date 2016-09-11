@@ -4,7 +4,7 @@
 
 Tweet Heatmap using loklak as a source.
 
-Demo: polbaladas.com/loklakHeatMap/
+Demo: <http://polbaladas.com/loklakHeatMap/>
 
 ##Set up / Requirements
 
